@@ -1,0 +1,17 @@
+{
+  "name": "server-status-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "author": "typeling1578",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@fastify/websocket": "^9.0.0",
+    "fastify": "^4.26.1",
+    "os-utils": "^0.0.14",
+    "systeminformation": "^5.22.0"
+  }
+}
