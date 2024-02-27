@@ -35,7 +35,7 @@ fastify.register(async (fastify) => {
     });
 });
 
-fastify.listen({ port: 8000, host: "0.0.0.0" }, (err, address) => {
+fastify.listen({ port: Number(process.env.PORT ?? "8000"), host: process.env.HOST ?? "127.0.0.1" }, (err, address) => {
     if (err) throw err;
 });
 
