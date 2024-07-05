@@ -17,6 +17,13 @@ fastify.register(async (fastify) => {
     });
     fastify.get("/ws", { websocket: true }, (connection, req) => {
         connection.socket.on("message", (data) => {
+            if (connection.socket.lastMessageReceived &&
+                (Date.now() - connection.socket.lastMessageReceived) < 1000
+            ) {
+                connection.socket.close();
+                return;
+            }
+            connection.socket.lastMessageReceived = Date.now();
             try {
                 const message = JSON.parse(data.toString());
 
@@ -30,7 +37,12 @@ fastify.register(async (fastify) => {
                     default:
                         break;
                 }
-            } catch (e) {}
+            } catch (e) {
+                connection.socket.close();
+            }
+        });
+        connection.socket.on("error", (e) => {
+            connection.socket.close();
         });
     });
 });
