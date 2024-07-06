@@ -22,7 +22,7 @@ fastify.register(async (fastify) => {
             ) {
                 connection.socket.close();
                 setTimeout(() => {
-                    if (connection.socket.readyState !== WebSocket.CLOSED) {
+                    if (connection.socket.readyState !== 3 /* CLOSED */) {
                         connection.socket.terminate();
                     }
                 }, 500);
@@ -45,7 +45,7 @@ fastify.register(async (fastify) => {
             } catch (e) {
                 connection.socket.close();
                 setTimeout(() => {
-                    if (connection.socket.readyState !== WebSocket.CLOSED) {
+                    if (connection.socket.readyState !== 3 /* CLOSED */) {
                         connection.socket.terminate();
                     }
                 }, 500);
@@ -54,7 +54,7 @@ fastify.register(async (fastify) => {
         connection.socket.on("error", (e) => {
             connection.socket.close();
             setTimeout(() => {
-                if (connection.socket.readyState !== WebSocket.CLOSED) {
+                if (connection.socket.readyState !== 3 /* CLOSED */) {
                     connection.socket.terminate();
                 }
             }, 500);
@@ -75,7 +75,7 @@ setInterval(async () => {
     const mem_stats = await si.mem();
 
     fastify.websocketServer.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
+        if (client.readyState === 1 /* OPEN */) {
             client.send(JSON.stringify({
                 type: "stats",
                 cpu: {
