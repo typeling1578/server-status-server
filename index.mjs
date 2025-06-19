@@ -15,26 +15,26 @@ fastify.register(async (fastify) => {
     fastify.get("/", { websocket: false }, (req, res) => {
         res.send("It works!");
     });
-    fastify.get("/ws", { websocket: true }, (connection, req) => {
-        connection.socket.on("message", (data) => {
-            if (connection.socket.lastMessageReceived &&
-                (Date.now() - connection.socket.lastMessageReceived) < 1000
+    fastify.get("/ws", { websocket: true }, (socket, req) => {
+        socket.on("message", (data) => {
+            if (socket.lastMessageReceived &&
+                (Date.now() - socket.lastMessageReceived) < 1000
             ) {
-                connection.socket.close();
+                socket.close();
                 setTimeout(() => {
-                    if (connection.socket.readyState !== 3 /* CLOSED */) {
-                        connection.socket.terminate();
+                    if (socket.readyState !== 3 /* CLOSED */) {
+                        socket.terminate();
                     }
                 }, 500);
                 return;
             }
-            connection.socket.lastMessageReceived = Date.now();
+            socket.lastMessageReceived = Date.now();
             try {
                 const message = JSON.parse(data.toString());
 
                 switch (message.type) {
                     case "ping":
-                        connection.socket.send(JSON.stringify({
+                        socket.send(JSON.stringify({
                             type: "pong",
                             id: message.id,
                         }));
@@ -43,19 +43,19 @@ fastify.register(async (fastify) => {
                         break;
                 }
             } catch (e) {
-                connection.socket.close();
+                socket.close();
                 setTimeout(() => {
-                    if (connection.socket.readyState !== 3 /* CLOSED */) {
-                        connection.socket.terminate();
+                    if (socket.readyState !== 3 /* CLOSED */) {
+                        socket.terminate();
                     }
                 }, 500);
             }
         });
-        connection.socket.on("error", (e) => {
-            connection.socket.close();
+        socket.on("error", (e) => {
+            socket.close();
             setTimeout(() => {
-                if (connection.socket.readyState !== 3 /* CLOSED */) {
-                    connection.socket.terminate();
+                if (socket.readyState !== 3 /* CLOSED */) {
+                    socket.terminate();
                 }
             }, 500);
         });
