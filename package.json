@@ -10,7 +10,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@fastify/websocket": "^11.2.0",
-    "fastify": "^5.7.2",
+    "fastify": "^5.7.4",
     "os-utils": "^0.0.14",
     "systeminformation": "^5.30.6"
   }
