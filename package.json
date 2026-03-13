@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.mjs",
   "scripts": {
-    "start": "bun run index.mjs"
+    "start": "bun run index.mjs",
+    "build": "bun build ./index.mjs --compile --minify --sourcemap --bytecode --outfile server-status-server"
   },
   "author": "typeling1578",
   "license": "AGPL-3.0",
